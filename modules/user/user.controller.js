@@ -1,8 +1,7 @@
 const User = require("./user.model");
 const bcrcypt = require("bcryptjs");
 const randomstring = require("randomstring");
-const { generateToken, sendVerificationCode } = require("../../utils/auth");
-const { createInitialSetting } = require("../setting/setting.utils");
+const { generateToken, sendVerificationCode, sendVerificationCodeForResetPass } = require("../../utils/auth");
 
 const registerUser = async (req, res) => {
   try {
@@ -54,7 +53,7 @@ const registerUser = async (req, res) => {
 
       const user = await newUser.save();
       await sendVerificationCode(user, otp);
-      await createInitialSetting({ user: user?._id });
+     
       res.status(200).send({
         message: "We have sent you verification code. Please check your email!",
         status: 200,
@@ -79,7 +78,10 @@ const getUserInfo = async (req, res) => {
 
 const emailVerification = async (req, res) => {
   try {
-    const { email, otp } = req.body;
+    // const { email, otp } = req.body;
+
+    const email = req.query.email; // Get email from the query parameter
+    const otp = req.query.otp; 
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).send({
@@ -98,12 +100,22 @@ const emailVerification = async (req, res) => {
       await user.save();
 
       const token = await generateToken(user);
-      res.send({
-        message: "User Verified successfully",
-        user,
-        accessToken: token,
-        status: 200,
-      });
+      // res.send({
+      //   message: "User Verified successfully",
+      //   user,
+      //   accessToken: token,
+      //   status: 200,
+      // });
+
+      const htmlResponse = '<html><body><h1>User Verified successfully</h1></body></html>';
+
+      // Set the Content-Type header to indicate that you're sending HTML
+      res.setHeader('Content-Type', 'text/html');
+
+      // Send the HTML markup as the response
+      res.status(200).send(htmlResponse);
+
+
     }
   } catch (err) {
     res.status(500).send({
@@ -205,10 +217,10 @@ const forgetPassword = async (req, res) => {
         const otp = randomstring.generate({ length: 5, charset: "numeric" });
         isExist.otp = otp;
         const updatedUser = await isExist.save();
-        await sendVerificationCode(updatedUser, otp);
+        await sendVerificationCodeForResetPass(updatedUser, otp);
         res.status(200).send({
           message:
-            "We have sent you verification code. Please check your email!",
+            "We have sent you verification code for forgot password. Please check your email!",
           status: true,
         });
       } else if (isExist) {
@@ -255,12 +267,12 @@ const forgetPassword = async (req, res) => {
 
 const changePassword = async (req, res) => {
   const { old_password, new_password } = req.body;
-  try {
+  try { 
     const user = await User.findById({ _id: req.user._id });
     if (!user) {
       res.status(404).json({ message: "User not found." });
     }
-    const isPasswordMatch = await bcrcypt.compareSync(
+    const isPasswordMatch =  bcrcypt.compareSync(
       old_password,
       user.password
     );

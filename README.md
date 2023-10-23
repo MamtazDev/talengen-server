@@ -1,1 +1,0 @@
-# turkey-trade-market-server
