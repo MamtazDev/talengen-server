@@ -1,7 +1,7 @@
 const User = require("./user.model");
 const bcrcypt = require("bcryptjs");
 const randomstring = require("randomstring");
-const { generateToken, sendVerificationCode, sendVerificationCodeForResetPass } = require("../../utils/auth");
+const { generateToken, sendVerificationCode, sendVerificationCodeForReset } = require("../../utils/auth");
 
 const registerUser = async (req, res) => {
   try {
@@ -27,19 +27,21 @@ const registerUser = async (req, res) => {
         message: "We have sent you verification code. Please check your email!",
         status: 200,
       });
+      console.log(req.body)
     } else {
+
       const otp = randomstring.generate({ length: 5, charset: "numeric" });
-      const newUser = req.body.role === "Student" ?  new User({
+      const newUser = req.body.role === "Student" ? new User({
         role: req.body.role,
         email: req.body.email,
         username: req.body.username,
         password: bcrcypt.hashSync(req.body.password),
         otp,
-        
+
         institution: req.body.institution,
         graduation: req.body.graduation
-      }) :  new User({
-        
+      }) : new User({
+
         role: req.body.role,
         email: req.body.email,
         username: req.body.username,
@@ -53,7 +55,7 @@ const registerUser = async (req, res) => {
 
       const user = await newUser.save();
       await sendVerificationCode(user, otp);
-     
+
       res.status(200).send({
         message: "We have sent you verification code. Please check your email!",
         status: 200,
@@ -81,7 +83,7 @@ const emailVerification = async (req, res) => {
     // const { email, otp } = req.body;
 
     const email = req.query.email; // Get email from the query parameter
-    const otp = req.query.otp; 
+    const otp = req.query.otp;
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).send({
@@ -106,7 +108,6 @@ const emailVerification = async (req, res) => {
       //   accessToken: token,
       //   status: 200,
       // });
-
       const htmlResponse = '<html><body><h1>User Verified successfully</h1></body></html>';
 
       // Set the Content-Type header to indicate that you're sending HTML
@@ -212,15 +213,16 @@ const getUser = async (req, res) => {
 const forgetPassword = async (req, res) => {
   try {
     const isExist = await User.findOne({ email: req.body.email });
+    console.log(isExist)
     if (req.body.email && !req.body.otp) {
       if (isExist && isExist.isVerified === true) {
         const otp = randomstring.generate({ length: 5, charset: "numeric" });
         isExist.otp = otp;
         const updatedUser = await isExist.save();
-        await sendVerificationCodeForResetPass(updatedUser, otp);
+        await sendVerificationCodeForReset(updatedUser);
         res.status(200).send({
           message:
-            "We have sent you verification code for forgot password. Please check your email!",
+            "We have sent you verification code. Please check your email!",
           status: true,
         });
       } else if (isExist) {
@@ -267,12 +269,18 @@ const forgetPassword = async (req, res) => {
 
 const changePassword = async (req, res) => {
   const { old_password, new_password } = req.body;
-  try { 
-    const user = await User.findById({ _id: req.user._id });
+  console.log(req.body)
+
+  // console.log("User Identity:", req.params.email)
+  try {
+    // const user = await User.findById({ _id: req.params.id });
+    const user = await User.findOne({ email: req.params.email });
+    // console.log("user", user)
+
     if (!user) {
       res.status(404).json({ message: "User not found." });
     }
-    const isPasswordMatch =  bcrcypt.compareSync(
+    const isPasswordMatch = bcrcypt.compareSync(
       old_password,
       user.password
     );

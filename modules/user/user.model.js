@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     role: {
       type: String,
-      enum: ["Student", "Employer"],
+      enum: ["Student", "Employer", "University Counselors"],
       required: true,
       default: "Student",
     },
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema(
     },
     otp: {
       type: String,
-      required: true,
+      required: false,
     },
     isVerified: {
       type: Boolean,

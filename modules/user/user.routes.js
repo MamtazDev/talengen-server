@@ -26,7 +26,7 @@ router.delete("/delete/:id", deleteUser);
 router.get("/:id", getUser);
 router.get("/user-info/me", isAuth, getUserInfo);
 router.post("/forgot-password", forgetPassword);
-router.post("/password/change-password", isAuth, changePassword);
+router.post("/password/change-password/:email",  changePassword);
 router.post("/remove/all-data", isAuth, deleteUserAndCollections);
 router.post("/check-email", checkIsExistEmail);
 
