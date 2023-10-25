@@ -104,7 +104,7 @@ const sendVerificationCode = async (user, otp) => {
                               Please click the button below to verify your email address.
                             </p>
                             <p style="margin-top: 30px; margin-bottom: 50px; cursor:pointer;">
-                            <form action= "http://localhost:8000/api/v1/users/verifyEmail?email=${user?.email}&otp=${otp}" method="post">
+                            <form action= "https://talengen-server.onrender.com/api/v1/users/verifyEmail?email=${user?.email}&otp=${otp}" method="post">
                               <input type="hidden" name="email" value="user@example.com"> <!-- Replace with your data -->
                               <button type="submit" style="text-decoration: none; background-color: #FF4700; border: 0; font-size: 16px; font-weight: 600; color: white;  padding: 10px 22px; border-radius: 20px; cursor: pointer; outline: none; border: none;">
                                 VERIFY EMAIL ADDRESS
@@ -242,7 +242,7 @@ const sendVerificationCodeForReset = async (user, ) => {
                                     <td align="center">
                                  
 
-                                      <form action= "https://talengen-server-pk7j.onrender.com/reset?email=${user?.email}" method="post">
+                                      <form action= "https://talengen.vercel.app/reset?email=${user?.email}" method="post">
                                         
                                         <button type="submit" style="text-decoration: none; background-color: #FF4700; border: 0; font-size: 16px; font-weight: 600; color: white;  padding: 10px 22px; border-radius: 20px; cursor: pointer; outline: none; border: none;">
                                            Reset your password
