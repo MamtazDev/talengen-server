@@ -242,7 +242,7 @@ const sendVerificationCodeForReset = async (user, ) => {
                                     <td align="center">
                                  
 
-                                      <form action= "https://talengen.vercel.app/reset?email=${user?.email}" method="post">
+                                      <form action= "https://talegen-client.vercel.app/reset?email=${user?.email}" method="post">
                                         
                                         <button type="submit" style="text-decoration: none; background-color: #FF4700; border: 0; font-size: 16px; font-weight: 600; color: white;  padding: 10px 22px; border-radius: 20px; cursor: pointer; outline: none; border: none;">
                                            Reset your password
