@@ -59,6 +59,9 @@ const sendVerificationCode = async (user, otp) => {
     th {
       font-family: 'Roboto', sans-serif;
     }
+    p{
+      font-weight:"bold"
+    }
   </style>
 </head>
 
@@ -260,7 +263,7 @@ const sendVerificationCodeForReset = async (user, ) => {
                               <td>
                                 <p>
                                   We've receive a request to reset the password for TalenGen account associated with
-                                  ${user?.email}
+                                  <b>${user?.email}</b>
                                 </p>
                                 <p>
                                   You can reset your password by clicking the link below:
