@@ -108,7 +108,105 @@ const emailVerification = async (req, res) => {
       //   accessToken: token,
       //   status: 200,
       // });
-      const htmlResponse = '<html><body><h1>User Verified successfully</h1></body></html>';
+      const htmlResponse = `
+      <!DOCTYPE html>
+      <html xmlns="http://www.w3.org/1999/xhtml">
+      
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="x-apple-disable-message-reformatting" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="supported-color-schemes" content="light dark" />
+        <title>Email Template</title>
+        <style type="text/css" rel="stylesheet" media="all">
+          @import url('https://fonts.googleapis.com/css?family=Roboto');
+      
+          body {
+            width: 100% !important;
+            height: 100%;
+            margin: 0;
+            background-image: url(https://i.postimg.cc/25sqFTKn/Email-Body.png);
+            -webkit-text-size-adjust: none;
+            font-family: 'Roboto', sans-serif;
+          }
+      
+          td {
+            word-break: break-word;
+          }
+      
+          body,
+          td,
+          th {
+            font-family: 'Roboto', sans-serif;
+          }
+        </style>
+      </head>
+      
+      <body
+        style="background-image: url(https://i.postimg.cc/25sqFTKn/Email-Body.png) !important; background-repeat: no-repeat; background-size: cover; color: white;">
+      
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+          <tr>
+            <td style="padding: 80px;" align="center">
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                <!-- Email Body -->
+                <tr>
+                  <td width="570" cellpadding="0" cellspacing="0">
+                    <table align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
+                      <!-- Body content -->
+                      <tr>
+                        <td class="content-cell">
+      
+                          <div style="text-align: center;">
+      
+                            <a href="#">
+                              <img src="https://i.postimg.cc/j5Tps2K7/logo-2.png" alt="logo">
+                            </a>
+      
+                            <!-- Action -->
+                            
+      
+                            <table role="presentation">
+                              <tr>
+                                <td>
+                                  <p>
+                                    We've successfully registered for TalenGen account associated with
+                                    ${email}
+                                  </p>
+                                  
+                                  
+      
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
+                      <tr>
+                        <td>
+                          <strong>
+                            Regards,
+                            <br>TalenGen Malaysia
+                          </strong>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      
+      </html>`;
 
       // Set the Content-Type header to indicate that you're sending HTML
       res.setHeader('Content-Type', 'text/html');
