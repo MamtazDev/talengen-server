@@ -252,7 +252,7 @@ const sendVerificationCodeForReset = async (user, ) => {
                                 </table>
                               </td>
                             </tr>
-    
+  
                           </table>
     
                           <table role="presentation">

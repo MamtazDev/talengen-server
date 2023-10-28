@@ -12,6 +12,9 @@ const {
   deleteUserAndCollections,
   checkIsExistEmail,
   updateUserInfo,
+  resendForResetPassword,
+  resendForRegister
+
 } = require("./user.controller");
 const { isAuth } = require("../../utils/middleware");
 
@@ -29,5 +32,7 @@ router.post("/forgot-password", forgetPassword);
 router.post("/password/change-password/:email",  changePassword);
 router.post("/remove/all-data", isAuth, deleteUserAndCollections);
 router.post("/check-email", checkIsExistEmail);
+router.post("/resend-register", resendForRegister);
+router.post("/resend-reset", resendForResetPassword);
 
 module.exports = router;

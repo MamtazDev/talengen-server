@@ -223,6 +223,63 @@ const emailVerification = async (req, res) => {
   }
 };
 
+const resendForRegister = async (req, res) => {
+  try {
+    const isExist = await User.findOne({ email: req.body.email });
+    console.log(isExist)
+    if (req.body.email && !req.body.otp) {
+      if (isExist && isExist.isVerified === true) {
+        const otp = randomstring.generate({ length: 5, charset: "numeric" });
+        isExist.otp = otp;
+        const updatedUser = await isExist.save();
+        await sendVerificationCode(updatedUser,otp);
+        res.status(200).send({
+          message:
+            "We have sent you verification code. Please check your email!",
+          status: true,
+        });
+      } else if (isExist) {
+        res.status(200).send({
+          message: "Account Not Found",
+          status: false,
+        });
+      } else {
+        res.status(200).send({
+          message: "Email Not Verified",
+          status: false,
+        });
+      }
+    } else if (req.body.email && req.body.otp && !req.body.password) {
+      if (isExist.otp === req.body.otp) {
+        res.send({
+          message: "Change Your Password",
+          status: true,
+        });
+      } else {
+        res.send({
+          message: "OTP is incorrect",
+          status: false,
+        });
+      }
+    } else if (req.body.password) {
+      isExist.password = bcrcypt.hashSync(req.body.password);
+      await isExist.save();
+
+      const token = await generateToken(isExist);
+      res.send({
+        message: "Password Changed successfully",
+        isExist,
+        accessToken: token,
+        status: 200,
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+};
+
 const loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -365,6 +422,65 @@ const forgetPassword = async (req, res) => {
   }
 };
 
+const resendForResetPassword = async (req, res) => {
+  try {
+    const isExist = await User.findOne({ email: req.body.email });
+    console.log(isExist)
+    if (req.body.email && !req.body.otp) {
+      if (isExist && isExist.isVerified === true) {
+        const otp = randomstring.generate({ length: 5, charset: "numeric" });
+        isExist.otp = otp;
+        const updatedUser = await isExist.save();
+        await sendVerificationCodeForReset(updatedUser);
+        res.status(200).send({
+          message:
+            "We have sent you verification code. Please check your email!",
+          status: true,
+        });
+      } else if (isExist) {
+        res.status(200).send({
+          message: "Account Not Found",
+          status: false,
+        });
+      } else {
+        res.status(200).send({
+          message: "Email Not Verified",
+          status: false,
+        });
+      }
+    } else if (req.body.email && req.body.otp && !req.body.password) {
+      if (isExist.otp === req.body.otp) {
+        res.send({
+          message: "Change Your Password",
+          status: true,
+        });
+      } else {
+        res.send({
+          message: "OTP is incorrect",
+          status: false,
+        });
+      }
+    } else if (req.body.password) {
+      isExist.password = bcrcypt.hashSync(req.body.password);
+      await isExist.save();
+
+      const token = await generateToken(isExist);
+      res.send({
+        message: "Password Changed successfully",
+        isExist,
+        accessToken: token,
+        status: 200,
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+};
+
+
+
 const changePassword = async (req, res) => {
   const { old_password, new_password } = req.body;
   console.log(req.body)
@@ -485,4 +601,6 @@ module.exports = {
   deleteUserAndCollections,
   checkIsExistEmail,
   updateUserInfo,
+  resendForResetPassword,
+  resendForRegister
 };
