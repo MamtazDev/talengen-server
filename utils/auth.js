@@ -21,8 +21,10 @@ const sendVerificationCode = async (email, otp) => {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "mohisilva1@gmail.com",
-      pass: "peqprjkgjiikugvk",
+      user: "mohi.opediatech@gmail.com",
+      pass: "xhiqdlmcosbajqpw",
+      // user: "mohisilva1@gmail.com",
+      // pass: "peqprjkgjiikugvk",
     },
   });
 
@@ -176,8 +178,8 @@ const sendVerificationCodeForReset = async (user, ) => {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "mohisilva1@gmail.com",
-      pass: "peqprjkgjiikugvk",
+      user: "mohi.opediatech@gmail.com",
+      pass: "xhiqdlmcosbajqpw",
     },
   });
 
