@@ -17,7 +17,7 @@ const generateToken = async (user) => {
   );
 };
 
-const sendVerificationCode = async (user, otp) => {
+const sendVerificationCode = async (email, otp) => {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -28,7 +28,7 @@ const sendVerificationCode = async (user, otp) => {
 
   const mailOptions = {
     from: "mohisilva1@gmail.com",
-    to: user?.email,
+    to: email,
     subject: "Email Verification",
     html: `
  
@@ -113,7 +113,7 @@ const sendVerificationCode = async (user, otp) => {
                               <input type="hidden" name="email" value="user@example.com"> <!-- Replace with your data -->
                             
                               
-                              <a href="${client_Url}/verifysuccess?email=${user?.email}&otp=${otp}" target="_blank">
+                              <a href="${client_Url}/verifysuccess?email=${email}&otp=${otp}" target="_blank">
                               <button  style="text-decoration: none; background-color: #FF4700; border: 0; font-size: 16px; font-weight: 600; color: white;  padding: 10px 22px; border-radius: 20px; cursor: pointer; outline: none; border: none;">
                                 VERIFY EMAIL ADDRESS
                               </button>

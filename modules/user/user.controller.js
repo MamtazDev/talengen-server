@@ -226,29 +226,32 @@ const emailVerification = async (req, res) => {
 const resendForRegister = async (req, res) => {
   try {
     const isExist = await User.findOne({ email: req.body.email });
-    console.log(isExist)
+    
     if (req.body.email && !req.body.otp) {
-      if (isExist && isExist.isVerified === true) {
-        const otp = randomstring.generate({ length: 5, charset: "numeric" });
-        isExist.otp = otp;
-        const updatedUser = await isExist.save();
-        await sendVerificationCode(updatedUser,otp);
-        res.status(200).send({
-          message:
-            "We have sent you verification code. Please check your email!",
-          status: true,
-        });
-      } else if (isExist) {
-        res.status(200).send({
-          message: "Account Not Found",
-          status: false,
-        });
-      } else {
-        res.status(200).send({
-          message: "Email Not Verified",
-          status: false,
-        });
-      }
+
+      const otp = randomstring.generate({ length: 5, charset: "numeric" });
+      
+      await sendVerificationCode(req.body.email ,otp);
+      res.status(200).send({
+        message:
+          "We have sent you verification code. Please check your email!",
+        status: true,
+      });
+
+
+      // if (isExist || isExist.isVerified !== true) {
+        
+      // } else if (isExist) {
+      //   res.status(200).send({
+      //     message: "Account Not Found",
+      //     status: false,
+      //   });
+      // } else {
+      //   res.status(200).send({
+      //     message: "Email Not Verified",
+      //     status: false,
+      //   });
+      // }
     } else if (req.body.email && req.body.otp && !req.body.password) {
       if (isExist.otp === req.body.otp) {
         res.send({
