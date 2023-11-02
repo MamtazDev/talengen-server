@@ -230,6 +230,10 @@ const resendForRegister = async (req, res) => {
     if (req.body.email && !req.body.otp) {
 
       const otp = randomstring.generate({ length: 5, charset: "numeric" });
+
+      isExist.otp = otp;
+      await isExist.save();
+
       
       await sendVerificationCode(req.body.email ,otp);
       res.status(200).send({
@@ -237,6 +241,7 @@ const resendForRegister = async (req, res) => {
           "We have sent you verification code. Please check your email!",
         status: true,
       });
+
 
 
       // if (isExist || isExist.isVerified !== true) {
