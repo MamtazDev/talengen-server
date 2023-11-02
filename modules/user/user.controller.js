@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
       isExist.otp = otp;
 
       const updatedUser = await isExist.save();
-      await sendVerificationCode(updatedUser, otp);
+      await sendVerificationCode(updatedUser.email, otp);
 
       res.status(200).send({
         message: "We have sent you verification code. Please check your email!",
@@ -54,7 +54,7 @@ const registerUser = async (req, res) => {
       });
 
       const user = await newUser.save();
-      await sendVerificationCode(user, otp);
+      await sendVerificationCode(user.email, otp);
 
       res.status(200).send({
         message: "We have sent you verification code. Please check your email!",
