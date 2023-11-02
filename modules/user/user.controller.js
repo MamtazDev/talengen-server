@@ -482,8 +482,8 @@ const resendForResetPassword = async (req, res) => {
 
 
 const changePassword = async (req, res) => {
-  const { old_password, new_password } = req.body;
-  console.log(req.body)
+  const { new_password } = req.body;
+  console.log("Body Data: ", req.body)
 
   // console.log("User Identity:", req.params.email)
   try {
@@ -494,16 +494,11 @@ const changePassword = async (req, res) => {
     if (!user) {
       res.status(404).json({ message: "User not found." });
     }
-    const isPasswordMatch = bcrcypt.compareSync(
-      old_password,
-      user.password
-    );
-    if (!isPasswordMatch) {
-      res.status(401).json({
-        success: false,
-        message: "Incorrect old password.",
-      });
-    } else {
+    // const isPasswordMatch = bcrcypt.compareSync(
+    //   old_password,
+    //   user.password
+    // );
+  
       user.password = bcrcypt.hashSync(new_password);
       await user.save();
 
@@ -511,7 +506,7 @@ const changePassword = async (req, res) => {
         success: true,
         message: "Password updated successfully.",
       });
-    }
+    
   } catch (error) {
     res.status(500).json({
       success: false,

@@ -1,6 +1,7 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const { client_Url, server_Url } = require("./url");
 
 const generateToken = async (user) => {
   return jwt.sign(
@@ -103,16 +104,21 @@ const sendVerificationCode = async (user, otp) => {
                       <table role="presentation">
                         <tr>
                           <td>
-                            <p style="font-size: 22px;">
+                            <p style="font-size: 22px; color: white; font-weight: 600;">
                               Please click the button below to verify your email address.
                             </p>
                             <p style="margin-top: 30px; margin-bottom: 50px; cursor:pointer;">
-                            <form action= "https://talengen-server.onrender.com/api/v1/users/verifyEmail?email=${user?.email}&otp=${otp}" method="post">
+                           
+
                               <input type="hidden" name="email" value="user@example.com"> <!-- Replace with your data -->
-                              <button type="submit" style="text-decoration: none; background-color: #FF4700; border: 0; font-size: 16px; font-weight: 600; color: white;  padding: 10px 22px; border-radius: 20px; cursor: pointer; outline: none; border: none;">
+                            
+                              
+                              <a href="${client_Url}/verifysuccess?email=${user?.email}&otp=${otp}" target="_blank">
+                              <button  style="text-decoration: none; background-color: #FF4700; border: 0; font-size: 16px; font-weight: 600; color: white;  padding: 10px 22px; border-radius: 20px; cursor: pointer; outline: none; border: none;">
                                 VERIFY EMAIL ADDRESS
                               </button>
-                            </form>
+                              </a>
+                         
                           </p>
                           </td>
                         </tr>
@@ -245,7 +251,7 @@ const sendVerificationCodeForReset = async (user, ) => {
                                     <td align="center">
                                  
 
-                                    <a href="https://talegen-client.vercel.app/reset?email=${user?.email}" target="_blank">
+                                    <a href="${client_Url}/reset?email=${user?.email}" target="_blank">
                                       <button style="text-decoration: none; background-color: #FF4700; border: 0; font-size: 16px; font-weight: 600; color: white; padding: 10px 22px; border-radius: 20px; cursor: pointer; outline: none; border: none;">
                                         Reset your password
                                       </button>
@@ -263,7 +269,7 @@ const sendVerificationCodeForReset = async (user, ) => {
                               <td>
                                 <p>
                                   We've receive a request to reset the password for TalenGen account associated with
-                                  <b style="color:white">${user?.email}</b>
+                                  <b style="color: white;">${user?.email}</b>
                                 </p>
                                 <p>
                                   You can reset your password by clicking the link below:
